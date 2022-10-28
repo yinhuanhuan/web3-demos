@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/wallets/create', function () {
     return view('wallets.create');
 });
+
+Route::get('/wallets/address', function () {
+    return view('wallets.address');
+});

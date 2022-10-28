@@ -91,7 +91,7 @@
                         }
 
                         // 2.2. 使用助记词生成钱包
-                        var wallet = ethers.Wallet.fromMnemonic(this.phrase, this.path)
+                        let wallet = ethers.Wallet.fromMnemonic(this.phrase, this.path)
                         if (wallet) {
                             this.msg = "Wallet created successful."
                             this.wallet.phrase = wallet.mnemonic.phrase
@@ -104,10 +104,10 @@
                         }
                         
                         // 1. 直接生成32个字节的数当成私钥用来生成钱包
-                        // var wallet = new ethers.Wallet(ethers.utils.randomBytes(32))
+                        // let wallet = new ethers.Wallet(ethers.utils.randomBytes(32))
 
                         // 3. 直接生成带有助记词的钱包
-                        // var wallet = ethers.Wallet.createRandom()
+                        // let wallet = ethers.Wallet.createRandom()
                     }
                 }
             }).mount('#app')
