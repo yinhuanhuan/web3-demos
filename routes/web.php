@@ -28,3 +28,7 @@ Route::get('/wallets/address', function () {
 Route::get('/wallets/transaction', function () {
     return view('wallets.transaction');
 });
+
+Route::get('/wallets/token', function () {
+    return view('wallets.token');
+});

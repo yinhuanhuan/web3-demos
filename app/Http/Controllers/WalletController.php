@@ -38,4 +38,36 @@ class WalletController extends Controller
         $response = Http::withOptions(['verify' => false])->post($requestURL, $param);
         return $response->body();
     }
+
+    // 查询钱包地址token余额
+    public function tokenBalance(Request $request)
+    {
+        $contractAddress = $request->input('contractAddress');
+        $rawData = $request->input('rawData');
+        $param = [
+            "jsonrpc" => "2.0",
+            "method" => "eth_getBalance",
+            "params" => [
+                $contractAddress,
+                "latest",
+            ],
+            "id" => uniqid(),
+        ];
+        $param = [
+            "jsonrpc" => "2.0",
+            "method" => "eth_call",
+            "params" => [
+                [
+                    "to" => $contractAddress,
+                    "data" => $rawData,
+                ],
+                "latest",
+            ],
+            "id" => 42,
+            
+        ];
+        $requestURL = config('web3.infura_api_url');
+        $response = Http::withOptions(['verify' => false])->post($requestURL, $param);
+        return $response->body();
+    }
 }
