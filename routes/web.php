@@ -32,3 +32,7 @@ Route::get('/wallets/transaction', function () {
 Route::get('/wallets/token', function () {
     return view('wallets.token');
 });
+
+Route::get('/wallets/send_tokens', function () {
+    return view('wallets.send_tokens');
+});

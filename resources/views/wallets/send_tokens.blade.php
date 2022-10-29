@@ -4,11 +4,12 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Transaction</title>
+        <title>Send Tokens</title>
 
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
         <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js" type="application/javascript"></script>
+        <script src="/js/abi.js"></script>
     </head>
     <body class="antialiased">
         <div id="app">
@@ -19,7 +20,13 @@
                     <th>Amount</th>
                     <td>
                         <input v-model="amount" placeholder="amount" />
-                        <span>wei</span>
+                        <span>tokens</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Contract Address</th>
+                    <td>
+                        <input v-model="contractAddress" placeholder="contract address" />
                     </td>
                 </tr>
                 <tr>
@@ -61,7 +68,7 @@
                 <tr>
                     <th></th>
                     <td>
-                        <button @click="sendTransaction()">Send Transaction</button>
+                        <button @click="sendTokens()">Send Tokens</button>
                         <span>@{{ msg }}</span>
                     </td>
                 </tr>
@@ -84,9 +91,10 @@
             createApp({
                 data() {
                     return {
-                        title: 'Send Transaction',
+                        title: 'Send Tokens',
                         msg: '',
-                        amount: 0,
+                        amount: 100000,
+                        contractAddress: '',
                         addressTo: '',
                         addressFrom: '',
                         privateKey: '',
@@ -98,8 +106,14 @@
                     }
                 },
                 methods: {
-                    // 发送交易
-                    async sendTransaction() {
+                    // 发送tokens
+                    async sendTokens() {
+                        // 检查是否为智能合约地址
+                        if (!ethers.utils.isAddress(this.contractAddress)) {
+                            this.msg = 'Contract Address format error.'
+                            return
+                        }
+
                         // 检查转入地址是否为钱包地址
                         if (!ethers.utils.isAddress(this.addressTo)) {
                             this.msg = 'Address To format error.'
@@ -112,13 +126,20 @@
                             return
                         }
 
+                        // 编码调用的abi函数及参数数据
+                        var interface = new ethers.utils.Interface(abi_erc20)
+                        var rawData = interface.encodeFunctionData('transfer',[
+                            this.addressTo,
+                            ethers.BigNumber.from(this.amount),
+                        ])
+
                         // 1. 构造交易请求
                         let txRequest = {
-                            to: this.addressTo,
+                            to: this.contractAddress, // 合约地址
                             from: this.addressFrom,
                             nonce: Number(this.nonce),
-                            data: '',
-                            value: ethers.BigNumber.from(this.amount),
+                            data: rawData,
+                            value: ethers.BigNumber.from(0),
                             gasLimit: ethers.BigNumber.from(this.gasLimit),
                             gasPrice: ethers.BigNumber.from(this.gasPrice),
                             chainId: 5,
@@ -140,7 +161,7 @@
                                 return
                             }
 
-                            this.msg = 'send transaction successful.'
+                            this.msg = 'send tokens successful.'
                             this.tx = data.result
                             this.txURL = 'https://goerli.etherscan.io/tx/' + this.tx
                         } catch (error) {
