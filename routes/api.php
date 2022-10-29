@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/wallets/balance', [WalletController::class, 'balance']);
+Route::post('/wallets/sendRawTransaction', [WalletController::class, 'sendRawTransaction']);

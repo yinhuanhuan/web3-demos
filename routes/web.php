@@ -24,3 +24,7 @@ Route::get('/wallets/create', function () {
 Route::get('/wallets/address', function () {
     return view('wallets.address');
 });
+
+Route::get('/wallets/transaction', function () {
+    return view('wallets.transaction');
+});

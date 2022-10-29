@@ -24,4 +24,18 @@ class WalletController extends Controller
         $response = Http::withOptions(['verify' => false])->post($requestURL, $param);
         return $response->body();
     }
+
+    // 发送交易，上送经过签名的原始交易信息
+    public function sendRawTransaction(Request $request) {
+        $rawTransaction = $request->input('rawTransaction');
+        $param = [
+            "jsonrpc" => "2.0",
+            "method" => "eth_sendRawTransaction",
+            "params" => [$rawTransaction],
+            "id" => uniqid(),
+        ];
+        $requestURL = config('web3.infura_api_url');
+        $response = Http::withOptions(['verify' => false])->post($requestURL, $param);
+        return $response->body();
+    }
 }

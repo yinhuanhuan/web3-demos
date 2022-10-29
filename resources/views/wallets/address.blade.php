@@ -44,8 +44,8 @@
                 data() {
                     return {
                         title: 'Wallet Address',
-                        address: "",
                         msg: '',
+                        address: "",
                         balance: 0,
                     }
                 },
@@ -63,7 +63,7 @@
                                 params: {
                                     address: this.address,
                                 }
-                            });
+                            })
                             let data = response.data
 
                             // jsonrpc api是否报错
