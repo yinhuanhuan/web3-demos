@@ -21,6 +21,10 @@ Route::get('/wallets/create', function () {
     return view('wallets.create');
 });
 
+Route::get('/wallets/import', function () {
+    return view('wallets.import');
+});
+
 Route::get('/wallets/address', function () {
     return view('wallets.address');
 });

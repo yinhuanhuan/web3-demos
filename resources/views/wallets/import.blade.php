@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Create HD Wallet</title>
+        <title>Import HD Wallet</title>
 
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
@@ -18,13 +18,12 @@
                     <th>Mnemonic Phrase</th>
                     <td>
                         <input v-model="phrase" placeholder="mnemonic phrase" />
-                        <button @click="createRandomPhrase()">Create random mnemonic phrase</button>
                     </td>
                 </tr>
                 <tr>
                     <th></th>
                     <td>
-                        <button @click="createWallet()">Create wallet</button>
+                        <button @click="importWallet()">Import wallet</button>
                         <span>@{{ msg }}</span>
                     </td>
                 </tr>
@@ -53,7 +52,7 @@
             createApp({
                 data() {
                     return {
-                        title: 'Create HD Wallet',
+                        title: 'Import HD Wallet',
                         msg: "",
                         phrase: "",
                         path: "m/44'/60'/0'/0/0",
@@ -67,37 +66,26 @@
                     }
                 },
                 methods: {
-                    // 生成随机助记词
-                    createRandomPhrase() {
-                        // 2.1. 生成随机数，使用随机数生成助记词
-                        this.phrase = ethers.utils.entropyToMnemonic(ethers.utils.randomBytes(16))
-                    },
-                    // 生成钱包
-                    createWallet() {
+                    // 导入钱包
+                    importWallet() {
                         // 检查助记词是否有效
                         if (!ethers.utils.isValidMnemonic(this.phrase)) {
                             this.msg = "Mnemonic Phrase invalied."
                             return
                         }
 
-                        // 2.2. 使用助记词生成钱包
+                        // 2.2. 使用助记词导入钱包
                         let wallet = ethers.Wallet.fromMnemonic(this.phrase, this.path)
                         if (wallet) {
-                            this.msg = "Wallet created successful."
+                            this.msg = "Wallet import successful."
                             this.wallet.phrase = wallet.mnemonic.phrase
                             this.wallet.path = wallet.mnemonic.path
                             this.wallet.address = wallet.address
                             this.wallet.publicKey = wallet.publicKey
                             this.wallet.privateKey = wallet.privateKey
                         } else {
-                            this.msg = "Wallet created failed."
+                            this.msg = "Wallet import failed."
                         }
-                        
-                        // 1. 直接生成32个字节的数当成私钥用来生成钱包
-                        // let wallet = new ethers.Wallet(ethers.utils.randomBytes(32))
-
-                        // 3. 直接生成带有助记词的钱包
-                        // let wallet = ethers.Wallet.createRandom()
                     }
                 }
             }).mount('#app')
