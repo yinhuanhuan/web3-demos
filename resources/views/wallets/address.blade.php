@@ -9,28 +9,32 @@
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
         <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js" type="application/javascript"></script>
+
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
+        <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
+        
+        <style type="text/css">
+            table th { text-align: right; font-weight: normal; padding-right: 20px; }
+        </style>
     </head>
     <body class="antialiased">
         <div id="app">
             <h3>@{{ title }}</h3>
             
+            <el-form label-width="auto">
+                <el-form-item label="Address">
+                    <el-input v-model="address" placeholder="address" />
+                </el-form-item>
+
+                <el-form-item label=" ">
+                    <el-button type="primary" @click="queryBalance()">Query Balance</button>
+                </el-form-item>
+            </el-form>
+
             <table>
-                <tr>
-                    <th>Address</th>
-                    <td>
-                        <input v-model="address" placeholder="address" />
-                    </td>
-                </tr>
                 <tr>
                     <th>Balance</th>
                     <td>@{{ balance }}</td>
-                </tr>
-                <tr>
-                    <th></th>
-                    <td>
-                        <button @click="queryBalance()">Query Balance</button>
-                        <span>@{{ msg }}</span>
-                    </td>
                 </tr>
             </table>
         </div>
@@ -42,7 +46,6 @@
                 data() {
                     return {
                         title: 'Wallet Address',
-                        msg: '',
                         address: "",
                         balance: 0,
                     }
@@ -52,7 +55,10 @@
                     async queryBalance() {
                         // 检查是否为钱包地址
                         if (!ethers.utils.isAddress(this.address)) {
-                            this.msg = 'Address format error.'
+                            ElementPlus.ElMessage({
+                                message: 'Address format error.',
+                                type: 'error',
+                            })
                             return
                         }
 
@@ -64,18 +70,28 @@
 
                             // jsonrpc api是否报错
                             if (data.hasOwnProperty('error')) {
-                                this.msg = data.error.code + ' ' + data.error.message
+                                ElementPlus.ElMessage({
+                                    message: data.error.code + ' ' + data.error.message,
+                                    type: 'error',
+                                })
                                 return
                             }
 
-                            this.msg = 'query balance successful.'
                             this.balance = ethers.utils.formatUnits(ethers.BigNumber.from(data.result))
+
+                            ElementPlus.ElMessage({
+                                message: 'Query balance successful.',
+                                type: 'success',
+                            })
                         } catch (error) {
-                            this.msg = error
+                            ElementPlus.ElMessage({
+                                message: error,
+                                type: 'error',
+                            })
                         }
                     },
                 }
-            }).mount('#app')
+            }).use(ElementPlus).mount('#app')
         </script>
     </body>
 </html>

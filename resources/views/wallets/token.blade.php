@@ -10,34 +10,36 @@
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
         <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js" type="application/javascript"></script>
         <script src="/js/abi.js"></script>
+
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
+        <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
+        
+        <style type="text/css">
+            table th { text-align: right; font-weight: normal; padding-right: 20px; }
+        </style>
     </head>
     <body class="antialiased">
         <div id="app">
             <h3>@{{ title }}</h3>
             
+            <el-form label-width="auto">
+                <el-form-item label="Contract Address">
+                    <el-input v-model="contractAddress" placeholder="contract address" />
+                </el-form-item>
+
+                <el-form-item label="Wallet Address">
+                    <el-input v-model="walletAddress" placeholder="wallet address" />
+                </el-form-item>
+
+                <el-form-item label=" ">
+                    <el-button type="primary" @click="queryTokenBalance()">Query Token Balance</button>
+                </el-form-item>
+            </el-form>
+
             <table>
-                <tr>
-                    <th>Contract Address</th>
-                    <td>
-                        <input v-model="contractAddress" placeholder="contract address" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>Wallet Address</th>
-                    <td>
-                        <input v-model="walletAddress" placeholder="wallet address" />
-                    </td>
-                </tr>
                 <tr>
                     <th>Token Balance</th>
                     <td>@{{ tokenBalance }}</td>
-                </tr>
-                <tr>
-                    <th></th>
-                    <td>
-                        <button @click="queryTokenBalance()">Query Token Balance</button>
-                        <span>@{{ msg }}</span>
-                    </td>
                 </tr>
             </table>
         </div>
@@ -49,7 +51,6 @@
                 data() {
                     return {
                         title: 'Token',
-                        msg: '',
                         contractAddress: '',
                         walletAddress: '',
                         tokenBalance: 0,
@@ -60,13 +61,19 @@
                     async queryTokenBalance() {
                         // 检查是否为智能合约地址
                         if (!ethers.utils.isAddress(this.contractAddress)) {
-                            this.msg = 'Contract Address format error.'
+                            ElementPlus.ElMessage({
+                                message: 'Contract Address format error.',
+                                type: 'error',
+                            })
                             return
                         }
 
                         // 检查是否为钱包地址
                         if (!ethers.utils.isAddress(this.walletAddress)) {
-                            this.msg = 'Wallet Address format error.'
+                            ElementPlus.ElMessage({
+                                message: 'Wallet Address format error.',
+                                type: 'error',
+                            })
                             return
                         }
 
@@ -85,18 +92,28 @@
 
                             // jsonrpc api是否报错
                             if (data.hasOwnProperty('error')) {
-                                this.msg = data.error.code + ' ' + data.error.message
+                                ElementPlus.ElMessage({
+                                    message: data.error.code + ' ' + data.error.message,
+                                    type: 'error',
+                                })
                                 return
                             }
 
-                            this.msg = 'query token balance successful.'
                             this.tokenBalance = ethers.BigNumber.from(data.result)
+
+                            ElementPlus.ElMessage({
+                                message: 'Query token balance successful.',
+                                type: 'success',
+                            })
                         } catch (error) {
-                            this.msg = error
+                            ElementPlus.ElMessage({
+                                message: error,
+                                type: 'error',
+                            })
                         }
                     },
                 }
-            }).mount('#app')
+            }).use(ElementPlus).mount('#app')
         </script>
     </body>
 </html>
