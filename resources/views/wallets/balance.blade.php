@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Wallet Address</title>
+        <title>Address Balance</title>
 
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
@@ -12,31 +12,30 @@
 
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
         <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
-        
-        <style type="text/css">
-            table th { text-align: right; font-weight: normal; padding-right: 20px; }
-        </style>
+        <link rel="stylesheet" href="/css/common.css" />
     </head>
     <body class="antialiased">
         <div id="app">
-            <h3>@{{ title }}</h3>
-            
-            <el-form label-width="auto">
-                <el-form-item label="Address">
-                    <el-input v-model="address" placeholder="address" />
-                </el-form-item>
+            @include('wallets.nav')
 
-                <el-form-item label=" ">
-                    <el-button type="primary" @click="queryBalance()">Query Balance</button>
-                </el-form-item>
-            </el-form>
+            <div id="content">
+                <el-form label-width="auto">
+                    <el-form-item label="Address">
+                        <el-input v-model="address" placeholder="address" />
+                    </el-form-item>
 
-            <table>
-                <tr>
-                    <th>Balance</th>
-                    <td>@{{ balance }}</td>
-                </tr>
-            </table>
+                    <el-form-item label=" ">
+                        <el-button type="primary" @click="queryBalance()">Query Balance</button>
+                    </el-form-item>
+                </el-form>
+
+                <table>
+                    <tr>
+                        <th>Balance</th>
+                        <td>@{{ balance }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <script>
@@ -45,9 +44,9 @@
             createApp({
                 data() {
                     return {
-                        title: 'Wallet Address',
                         address: "",
                         balance: 0,
+                        activeIndex: Vue.ref('3'),
                     }
                 },
                 methods: {

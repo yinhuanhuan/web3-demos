@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Token</title>
+        <title>Token Balance</title>
 
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
@@ -13,35 +13,34 @@
 
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
         <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
-        
-        <style type="text/css">
-            table th { text-align: right; font-weight: normal; padding-right: 20px; }
-        </style>
+        <link rel="stylesheet" href="/css/common.css" />
     </head>
     <body class="antialiased">
         <div id="app">
-            <h3>@{{ title }}</h3>
-            
-            <el-form label-width="auto">
-                <el-form-item label="Contract Address">
-                    <el-input v-model="contractAddress" placeholder="contract address" />
-                </el-form-item>
+            @include('wallets.nav')
 
-                <el-form-item label="Wallet Address">
-                    <el-input v-model="walletAddress" placeholder="wallet address" />
-                </el-form-item>
+            <div id="content">
+                <el-form label-width="auto">
+                    <el-form-item label="Contract Address">
+                        <el-input v-model="contractAddress" placeholder="contract address" />
+                    </el-form-item>
 
-                <el-form-item label=" ">
-                    <el-button type="primary" @click="queryTokenBalance()">Query Token Balance</button>
-                </el-form-item>
-            </el-form>
+                    <el-form-item label="Wallet Address">
+                        <el-input v-model="walletAddress" placeholder="wallet address" />
+                    </el-form-item>
 
-            <table>
-                <tr>
-                    <th>Token Balance</th>
-                    <td>@{{ tokenBalance }}</td>
-                </tr>
-            </table>
+                    <el-form-item label=" ">
+                        <el-button type="primary" @click="queryTokenBalance()">Query Token Balance</button>
+                    </el-form-item>
+                </el-form>
+
+                <table>
+                    <tr>
+                        <th>Token Balance</th>
+                        <td>@{{ tokenBalance }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <script>
@@ -50,10 +49,10 @@
             createApp({
                 data() {
                     return {
-                        title: 'Token',
                         contractAddress: '',
                         walletAddress: '',
                         tokenBalance: 0,
+                        activeIndex: Vue.ref('5'),
                     }
                 },
                 methods: {

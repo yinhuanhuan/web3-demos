@@ -25,16 +25,16 @@ Route::get('/wallets/import', function () {
     return view('wallets.import');
 });
 
-Route::get('/wallets/address', function () {
-    return view('wallets.address');
+Route::get('/wallets/balance', function () {
+    return view('wallets.balance');
 });
 
 Route::get('/wallets/transaction', function () {
     return view('wallets.transaction');
 });
 
-Route::get('/wallets/token', function () {
-    return view('wallets.token');
+Route::get('/wallets/token_balance', function () {
+    return view('wallets.token_balance');
 });
 
 Route::get('/wallets/send_tokens', function () {

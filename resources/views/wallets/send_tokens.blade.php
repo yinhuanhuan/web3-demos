@@ -13,69 +13,68 @@
 
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
         <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
-        
-        <style type="text/css">
-            table th { text-align: right; font-weight: normal; padding-right: 20px; }
-        </style>
+        <link rel="stylesheet" href="/css/common.css" />
     </head>
     <body class="antialiased">
         <div id="app">
-            <h3>@{{ title }}</h3>
+            @include('wallets.nav')
 
-            <el-form label-width="auto">
-                <el-form-item label="Amount">
-                    <el-input v-model="amount" placeholder="amount">
-                        <template #append>
-                            <span>tokens</span>
-                        </template>
-                    </el-input>
-                </el-form-item>
+            <div id="content">
+                <el-form label-width="auto">
+                    <el-form-item label="Amount">
+                        <el-input v-model="amount" placeholder="amount">
+                            <template #append>
+                                <span>tokens</span>
+                            </template>
+                        </el-input>
+                    </el-form-item>
 
-                <el-form-item label="Contract Address">
-                    <el-input v-model="contractAddress" placeholder="contract address" />
-                </el-form-item>
-                
-                <el-form-item label="Address To">
-                    <el-input v-model="addressTo" placeholder="address to" />
-                </el-form-item>
+                    <el-form-item label="Contract Address">
+                        <el-input v-model="contractAddress" placeholder="contract address" />
+                    </el-form-item>
+                    
+                    <el-form-item label="Address To">
+                        <el-input v-model="addressTo" placeholder="address to" />
+                    </el-form-item>
 
-                <el-form-item label="Address From">
-                    <el-input v-model="addressFrom" placeholder="address from" />
-                </el-form-item>
+                    <el-form-item label="Address From">
+                        <el-input v-model="addressFrom" placeholder="address from" />
+                    </el-form-item>
 
-                <el-form-item label="Private Key">
-                    <el-input v-model="privateKey" placeholder="private key" />
-                </el-form-item>
+                    <el-form-item label="Private Key">
+                        <el-input v-model="privateKey" placeholder="private key" />
+                    </el-form-item>
 
-                <el-form-item label="Nonce">
-                    <el-input v-model="nonce" placeholder="nonce" />
-                </el-form-item>
+                    <el-form-item label="Nonce">
+                        <el-input v-model="nonce" placeholder="nonce" />
+                    </el-form-item>
 
-                <el-form-item label="Gas Limit">
-                    <el-input v-model="gasLimit" placeholder="gas limit" />
-                </el-form-item>
+                    <el-form-item label="Gas Limit">
+                        <el-input v-model="gasLimit" placeholder="gas limit" />
+                    </el-form-item>
 
-                <el-form-item label="Gas Price">
-                    <el-input v-model="gasPrice" placeholder="gas price" />
-                </el-form-item>
+                    <el-form-item label="Gas Price">
+                        <el-input v-model="gasPrice" placeholder="gas price" />
+                    </el-form-item>
 
-                <el-form-item label=" ">
-                    <el-button type="primary" @click="sendTokens()">Send Tokens</button>
-                </el-form-item>
-            </el-form>
+                    <el-form-item label=" ">
+                        <el-button type="primary" @click="sendTokens()">Send Tokens</button>
+                    </el-form-item>
+                </el-form>
 
-            <table>
-                <tr>
-                    <th>Tx</th>
-                    <td>@{{ tx }}</td>
-                </tr>
-                <tr>
-                    <th>Tx Detail</th>
-                    <td>
-                        <a :href="txURL" target="_blank">@{{ txURL }}</a>
-                    </td>
-                </tr>
-            </table>
+                <table>
+                    <tr>
+                        <th>Tx</th>
+                        <td>@{{ tx }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tx Detail</th>
+                        <td>
+                            <a :href="txURL" target="_blank">@{{ txURL }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <script>
@@ -84,7 +83,6 @@
             createApp({
                 data() {
                     return {
-                        title: 'Send Tokens',
                         amount: 0,
                         contractAddress: '',
                         addressTo: '',
@@ -95,6 +93,7 @@
                         gasPrice: 33721725041,
                         tx: '',
                         txURL: '',
+                        activeIndex: Vue.ref('6'),
                     }
                 },
                 methods: {

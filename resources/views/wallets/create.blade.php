@@ -4,54 +4,53 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Create HD Wallet</title>
+        <title>Create Wallet</title>
 
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js" type="application/javascript"></script>
         <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/ethers/5.5.4/ethers.umd.min.js" type="application/javascript"></script>
 
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
         <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
-        
-        <style type="text/css">
-            table th { text-align: right; font-weight: normal; padding-right: 20px; }
-        </style>
+        <link rel="stylesheet" href="/css/common.css" />
     </head>
     <body class="antialiased">
         <div id="app">
-            <h3>@{{ title }}</h3>
+            @include('wallets.nav')
 
-            <el-form label-width="auto">
-                <el-form-item label="Mnemonic Phrase">
-                    <el-input v-model="phrase" placeholder="mnemonic phrase">
-                        <template #append>
-                            <el-button type="primary" @click="createRandomPhrase()">Create random mnemonic phrase</button>
-                        </template>
-                    </el-input>
-                </el-form-item>
+            <div id="content">
+                <el-form label-width="auto">
+                    <el-form-item label="Mnemonic Phrase">
+                        <el-input v-model="phrase" placeholder="mnemonic phrase">
+                            <template #append>
+                                <el-button type="primary" @click="createRandomPhrase()">Create random mnemonic phrase</button>
+                            </template>
+                        </el-input>
+                    </el-form-item>
 
-                <el-form-item label=" ">
-                    <el-button type="primary" @click="createWallet()">Create wallet</button>
-                </el-form-item>
-            </el-form>
-            
-            <table>
-                <tr>
-                    <th>Mnemonic Phrase</th>
-                    <td>@{{ wallet.phrase }}</td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td>@{{ wallet.address }}</td>
-                </tr>
-                <tr>
-                    <th>Public Key</th>
-                    <td>@{{ wallet.publicKey }}</td>
-                </tr>
-                <tr>
-                    <th>Private Key</th>
-                    <td>@{{ wallet.privateKey }}</td>
-                </tr>
-            </table>
+                    <el-form-item label=" ">
+                        <el-button type="primary" @click="createWallet()">Create Wallet</button>
+                    </el-form-item>
+                </el-form>
+                
+                <table>
+                    <tr>
+                        <th>Mnemonic Phrase</th>
+                        <td>@{{ wallet.phrase }}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td>@{{ wallet.address }}</td>
+                    </tr>
+                    <tr>
+                        <th>Public Key</th>
+                        <td>@{{ wallet.publicKey }}</td>
+                    </tr>
+                    <tr>
+                        <th>Private Key</th>
+                        <td>@{{ wallet.privateKey }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <script>
@@ -60,7 +59,6 @@
             createApp({
                 data() {
                     return {
-                        title: 'Create HD Wallet',
                         phrase: "",
                         path: "m/44'/60'/0'/0/0",
                         wallet: {
@@ -70,6 +68,7 @@
                             publicKey: "",
                             privateKey: "",
                         },
+                        activeIndex: Vue.ref('1'),
                     }
                 },
                 methods: {
