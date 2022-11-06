@@ -7,7 +7,7 @@
     active-text-color="#ffd04b"
 >
     <el-menu-item index="0">
-        <el-link :underline="false" href="/wallets/create">Wallet</el-link>
+        <el-link :underline="false" href="/wallets">Wallet</el-link>
     </el-menu-item>
 
     <el-menu-item index="1">

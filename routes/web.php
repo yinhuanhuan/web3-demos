@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/wallets', function () {
+    return redirect('/wallets/create');
+});
+
 Route::get('/wallets/create', function () {
     return view('wallets.create');
 });
